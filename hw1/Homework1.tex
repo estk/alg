@@ -1,0 +1,117 @@
+% ----------------------------------------------------------------
+% AMS-LaTeX Paper ************************************************
+% **** -----------------------------------------------------------
+\documentclass{amsart}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{mathtools}
+% \usepackage{xy}
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+% THEOREMS -------------------------------------------------------
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{alg}[thm]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{Remark}
+\numberwithin{equation}{section}
+% MATH -----------------------------------------------------------
+\newcommand{\Matrix}[4]{ \left( \begin{array}{cc}  #1 & #2 \\  #3 & #4 \\ \end{array} \right) }
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\isom}{\cong}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\pagestyle{plain}
+% ----------------------------------------------------------------
+\begin{document}
+\title[]{Algorithms Homework 1}%
+\author{Evan Simmons \\
+        Dept. of Mathematics \& Computer Science \\ University of California Santa Cruz}%
+%\date{}
+%\dedicatory{}%
+%\commby{}%
+\renewcommand{\abstractname}{Homework Option}
+% ----------------------------------------------------------------
+\begin{abstract}
+I would like to choose the homework heavy option.
+\end{abstract}
+\maketitle
+% ----------------------------------------------------------------
+
+\section{} Suppose we are given a sorted array of $n$ distinct elements
+that has been circularly shifted by $k$ elements. We want to find an
+algorithm to find the maximum that runs in $O(log(n))$ time.
+
+\lem \label{lem1}
+
+Consider two elements in our array, let us call them $A[i]$ and $A[j]$
+where $i < j$. The elements between and including them are sorted if
+and only if $A[i] < A[j]$. In other words: given any two elements in
+a circularly sorted array, if they are in the correct order, then the
+elements between them are in correct order.
+
+\proof{} 
+
+To prove the forward implication we will actually show the
+contrapositive. Suppose the array slice $A[i..j]$ is not sorted, then
+$\exists k \ni A[k] > A[k+1]$ where $i \leq k \leq j$. We know then
+that since the array is circularly sorted that $\forall x \in A[i..k]$
+and $\forall y \in A[(k+1)..j]$ we have $x > y$. Clearly $A[i] \in
+A[i..k]$ and $A[j] y \in A[(k+1)..j]$, therefore $A[i] > A[j]$
+
+To show the converse, we simply note that for any sorted array, the
+following holds:
+
+$$ \forall i,j \ni i<j \Rightarrow A[i] < A[j] $$
+
+\cor \label{cor1}
+
+Given a circularly sorted array and indices $i,j \in 0 \leq i < j \leq
+n$, the maximum is between $i$ and $j$ if and only if $A[i] > A[j]$.
+
+\proof 
+
+By ~\ref{lem1} if 
+
+\alg{(cirmax)}
+
+If the array consists of a single element, return that element.
+
+Let $h = \floor{n/2}$; compare the $A[0]$ and $A[h]$ elements. \\
+
+Case (Less than): return the value of cirmax( $A[h..n]$ ) \\
+
+Case (Greater than): return the value of cirmax( $A[0..(h-1)]$ ) \\
+
+\proof
+
+If an array consists of a single element, clearly that element must
+be the maximum. If the first element $A[0]$ is less than the middle
+element $A[h]$ then by ~\ref{cor1} the maximum occurs in the array slice
+$A[h..n]$. However if $A[0]$ is greater than $A[h]$, then, again by
+~\ref{cor1} the maximum occurs in $A[0..(h-1)]$ and we therefore only
+need consider that slice.
+
+\section{}
+
+
+\subsection*{}
+
+\end{document}
+% ----------------------------------------------------------------
