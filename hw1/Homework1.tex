@@ -151,9 +151,33 @@ thirds of the array. Finally, sort the first two thirds again.
 \subsection{} Provide an informal explaination of why this algorithm returns a
 sorted array.
 
+In short, this works because each partition can allow the swap of up to half of it's elements. Consider the worst case where each element in the bottom $\frac{1}{3}$ is strictly larger than the top $\frac{1}{3}$. This takes exactly three steps for the entire array to be sorted.
 
 
-\subsection*{}
+\subsection*{} Find a recurrence relation for the worst-case running time of this algorithm, then solve it using the Master Theorem.
+$$ T(n) = 3 \cdot T( \tfrac{2}{3} n) + n^0. $$
+
+Since $\log_{\frac{3}{2}} {3} > 0$, case 3 of the Master Theorem applies, and we get
+$T(n) = \Theta ( n^{log_{\frac{3}{2}} {3}} )$
+
+
+\section{} Consider a monotonously decreasing function $f : \NN \rightarrow \ZZ$. We want to find:
+
+$$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ 
+
+Give an $O(log n)$ algorithm.
+
+\alg
+Blah
+
+\section{}
+
+\subsection{} Describe O(n) time algorithms for solving l-LMPS and r-RMPS
+
+\subsection{} Given a O(n) time algorithm for l-LMPS describe a simple O(n2) algorithm for MPS.
+
+\subsection{} Given O(n) time algorithms for l-LMPS and r-RMPS describe an O(n log n) divide-and- conquer algorithm for MPS.
+
 
 \end{document}
 % ----------------------------------------------------------------
