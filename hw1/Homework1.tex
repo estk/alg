@@ -56,24 +56,21 @@ I would like to choose the homework heavy option.
 
 \section{} Suppose we are given a sorted array of $n$ distinct elements
 that has been circularly shifted by $k$ elements. We want to find an
-algorithm to find the maximum that runs in $O(log(n))$ time.
+algorithm which runs in $O(log(n))$ time to find the maximum.
 
 \lem \label{lem1}
 
-Consider two elements in our array, let us call them $A[i]$ and $A[j]$
-where $i < j$. The elements between and including them are sorted if
-and only if $A[i] < A[j]$. In other words: given any two elements in
-a circularly sorted array, if they are in the correct order, then the
-elements between them are in correct order.
+Consider two elements in our circularly sorted array, $A[i]$ and $A[j]$
+where $i < j$. The elements in $A[i..j]$ are sorted if
+and only if $A[i] < A[j]$.
 
 \proof{} 
 
-To prove the forward implication we will actually show the
-contrapositive. Suppose the array slice $A[i..j]$ is not sorted, then
-$\exists k \ni A[k] > A[k+1]$ where $i \leq k \leq j$. We know then
-that since the array is circularly sorted that $\forall x \in A[i..k]$
-and $\forall y \in A[(k+1)..j]$ we have $x > y$. Clearly $A[i] \in
-A[i..k]$ and $A[j] y \in A[(k+1)..j]$, therefore $A[i] > A[j]$
+Suppose the array slice $A[i..j]$ is not sorted, then $\exists k \ni
+A[k] > A[k+1]$ where $i \leq k \leq j$. We know then that since the
+array is circularly sorted that $\forall x \in A[i..k]$ and $\forall y
+\in A[(k+1)..j]$ we have $x > y$. Clearly $A[i] \in A[i..k]$ and $A[j] y
+\in A[(k+1)..j]$, therefore $A[i] > A[j]$
 
 To show the converse, we simply note that for any sorted array, the
 following holds:
@@ -82,12 +79,19 @@ $$ \forall i,j \ni i<j \Rightarrow A[i] < A[j] $$
 
 \cor \label{cor1}
 
-Given a circularly sorted array and indices $i,j \in 0 \leq i < j \leq
-n$, the maximum is between $i$ and $j$ if and only if $A[i] > A[j]$.
+Consider two elements in our array $A[i]$ and $A[j]$ where $i<j$, the maximum
+is in in $A[i..(j-1)]$ if and only if $A[i] > A[j]$
 
 \proof 
 
-By ~\ref{lem1} if 
+Suppose $A[i] < A[j]$. Then by ~\ref{lem1}, $A[i..j]$ is sorted. Hence
+$A[j]$ is larger than every element in $A[i..(j-1)]$, therefore the maximum
+cannot be in $A[i..(j-1)]$.
+
+Conversely suppose $A[i] > A[j]$, then by ~\ref{lem1} $A[i..(j-1)]$ is
+not sorted. By the definition of a (not completely sorted) circularly
+sorted array it has one consecutive pair of elements that are not
+pairwise sorted, that pair is the maximum and minimum.
 
 \alg{(cirmax)}
 
@@ -105,10 +109,48 @@ If an array consists of a single element, clearly that element must
 be the maximum. If the first element $A[0]$ is less than the middle
 element $A[h]$ then by ~\ref{cor1} the maximum occurs in the array slice
 $A[h..n]$. However if $A[0]$ is greater than $A[h]$, then, again by
-~\ref{cor1} the maximum occurs in $A[0..(h-1)]$ and we therefore only
-need consider that slice.
+~\ref{cor1} the maximum occurs in $A[0..(h-1)]$.
 
-\section{}
+\prop{The proposed algorithm runs in O(log (n)) time.}
+
+\proof
+
+Since at each level of recursion we do only constant work, and are able
+to eliminate half of the array, the complexity of the algorithm is
+simply the height of the longest branch of the recursion tree. Recall
+that the height of a tree is $log_{b} (n)$ where $b$ branching factor
+and $n$ is the total number of elements (including those pruned).
+Therefore the given algorithm is $\Theta( log n )$
+
+Alternatively, we could have used the Master Theorem. The recurrence
+relation is $T(n) = T(\frac{n}{2}) + n^0$ hence Case 2 applies and
+yeilds $T(n) = \Theta (\log n)$
+\\
+
+
+\section{} If $A$ is an array of $n$ numbers. We wish to find:
+
+$$ \max_{1 \leq j<k \leq n} (A[k] - A[j]).$$
+
+\subsection{} Give an $O( n^2 )$ algorithm.
+\alg{$O( n^2 )$}
+
+For each element of the array, find its difference with each subsequent element. Return the largest (positive) value of these differences.
+
+\subsection{} Provide a more efficient algorithm.
+
+Can this be done faster than O(n)?
+
+\subsection{} Provide a recurrence relation, and find an upper bound
+using the Master Theorem.
+
+\section{} Consider the following sorting algorithm: First sort the
+first two thirds of the elements in the array. Next sort the last two
+thirds of the array. Finally, sort the first two thirds again.
+
+\subsection{} Provide an informal explaination of why this algorithm returns a
+sorted array.
+
 
 
 \subsection*{}
