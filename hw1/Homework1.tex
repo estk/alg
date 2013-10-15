@@ -139,22 +139,24 @@ For each element of the array, find its difference with each subsequent element.
 
 \subsection{} Provide a more efficient algorithm.
 
-Can this be done faster than O(n)?
+XXX: Can this be done faster than O(n)?
 
 \subsection{} Provide a recurrence relation, and find an upper bound
 using the Master Theorem.
+
+XXX: TODO
 
 \section{} Consider the following sorting algorithm: First sort the
 first two thirds of the elements in the array. Next sort the last two
 thirds of the array. Finally, sort the first two thirds again.
 
 \subsection{} Provide an informal explaination of why this algorithm returns a
-sorted array.
+sorted array. \\
 
 In short, this works because each partition can allow the swap of up to half of it's elements. Consider the worst case where each element in the bottom $\frac{1}{3}$ is strictly larger than the top $\frac{1}{3}$. This takes exactly three steps for the entire array to be sorted.
 
 
-\subsection*{} Find a recurrence relation for the worst-case running time of this algorithm, then solve it using the Master Theorem.
+\subsection{} Find a recurrence relation for the worst-case running time of this algorithm, then solve it using the Master Theorem.
 $$ T(n) = 3 \cdot T( \tfrac{2}{3} n) + n^0. $$
 
 Since $\log_{\frac{3}{2}} {3} > 0$, case 3 of the Master Theorem applies, and we get
@@ -165,10 +167,12 @@ $T(n) = \Theta ( n^{log_{\frac{3}{2}} {3}} )$
 
 $$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ 
 
-Give an $O(log n)$ algorithm.
+Give an $O(log\ n)$ algorithm.
+
+XXX: Probably need to state a bound?
 
 \alg
-Blah
+XXX: TODO
 
 \section{}
 
