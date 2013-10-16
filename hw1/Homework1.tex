@@ -93,15 +93,15 @@ not sorted. By the definition of a (not completely sorted) circularly
 sorted array it has one consecutive pair of elements that are not
 pairwise sorted, that pair is the maximum and minimum.
 
-\alg{(cirmax)}
+\alg{(CIRCULAR\_MAX)}
 
 If the array consists of a single element, return that element.
 
 Let $h = \floor{n/2}$; compare the $A[0]$ and $A[h]$ elements. \\
 
-Case (Less than): return the value of cirmax( $A[h..n]$ ) \\
+Case (Less than): return the value of CIRCULAR\_MAX( $A[h..n]$ ) \\
 
-Case (Greater than): return the value of cirmax( $A[0..(h-1)]$ ) \\
+Case (Greater than): return the value of CIRCULAR\_MAX( $A[0..(h-1)]$ ) \\
 
 \proof
 
@@ -135,25 +135,88 @@ $$ \max_{1 \leq j<k \leq n} (A[k] - A[j]).$$
 \subsection{} Give an $O( n^2 )$ algorithm.
 \alg{$O( n^2 )$}
 
-For each element of the array, find its difference with each subsequent element. Return the largest (positive) value of these differences.
+For each element of the array, find its difference with each subsequent
+element. Return the largest (positive) value of these differences.
 
 \subsection{} Provide a more efficient algorithm.
 
-XXX: Can this be done faster than O(n)?
+At first I was stumped with this question, I quickly came up with
+the linear time solution, but couldn't imagine a divide and conquer
+algorithm. After all, a maximal subarray could cross any division point.
+After looking through my Undergraduate algorithms book\footnote{Thomas
+H. Cormen, "Introduction to Algorithms"}, I found an algorithm very similar
+to what follows. I found the technique used intersting, and even more so that 
+it is faster than the brute force method.
+
+\alg{MAX\_DIFF}
+
+If the array taken as argument is empty or contains only a single element, return zero.
+
+Let $h = \ceil{n/2}$ where $n$ is the length of the array. Return the following:
+
+\begin{align*}
+  \max(\ & \text{MAX\_DIFF}( A[0..(h-1)] ), \\
+        & \text{MAX\_DIFF}( A[h..(n-1)] ), \\
+        & \text{MAX\_SPANNING\_DIFF}( A[0..(h-1)], A[h..(n-1)] )\ )
+\end{align*}
+
+where MAX\_SPANNING\_DIFF is defined as follows.
+
+\proof 
+
+Clearly a maximal subarray either includes an element or it does not.
+Therfore there are three possible cases. The maximal subarray occurs
+left of $h$, the maximal subarray occurs right of $h$, or the maximal
+subarray includes $A[i]$. For the first two cases, since we call
+MAX\_DIFF recursively, hence it suffices to prove only the third for the
+call of $max$ to return the correct result. However, in the third case
+we mererly call MAX\_SPANNING\_DIFF, therefore we are done.
+
+\alg{MAX\_SPANNING\_DIFF}
+
+We take as argument two arrays $A$ and $B$ where their lengths are $n_a$
+and $n_b$ respectively. We return what follows by comparing each element in 
+each array with it's relevant pivot ($n_a$ and $0$ respectively)
+
+$$ \max_{0 \leq i \leq n_a -1}\ (A[n_a-1] - A[i]) + \max_{0 \leq j \leq n_b -1}\ (A[j] - A[0]) $$
+
+\proof 
+
+Certainly it is clear that we are finding the maximum difference between each
+array's pivot and their respective elements. It remains to show that the sum
+of these maximums in fact represnts the difference between the first and last
+elements of the maximal subarray which spans the two arrays passed as argument.
+
+
 
 \subsection{} Provide a recurrence relation, and find an upper bound
 using the Master Theorem.
 
-XXX: TODO
+The recurrence relation is:
+
+$$ T( n ) = 2T(n/2) + n. $$
+
+Let me explain. We split the array in half and find the maximal subarray
+difference in both sides. We do this by calling MAX\_DIFF recursively on
+both sides. Additionally we must scan each of the n elements at the current
+level to find the maximum spanning differnce.
+
+By invoking the Master Theorem we see that $a=2$, $b=2$, and $c=1$ which
+means that Case 2 applies and we have $T( n ) = \Theta( n\ log\ n )$
 
 \section{} Consider the following sorting algorithm: First sort the
 first two thirds of the elements in the array. Next sort the last two
 thirds of the array. Finally, sort the first two thirds again.
 
-\subsection{} Provide an informal explaination of why this algorithm returns a
-sorted array. \\
+\subsection{} Provide an informal explaination of why this algorithm
+returns a sorted array. \\
 
-In short, this works because each partition can allow the swap of up to half of it's elements. Consider the worst case where each element in the bottom $\frac{1}{3}$ is strictly larger than the top $\frac{1}{3}$. It is then possible to move the entire bottom $\frac{1}{3}$ into the top $\frac{1}{3}$ exactly because its length is half of the subarray hence can be swapped. Similarly for smallest elements.
+In short, this works because each partition can allow the swap of up to
+half of it's elements. Consider the worst case where each element in the
+bottom $\frac{1}{3}$ is strictly larger than the top $\frac{1}{3}$. It
+is then possible to move the entire bottom $\frac{1}{3}$ into the top
+$\frac{1}{3}$ exactly because its length is half of the subarray hence
+can be swapped. Similarly for smallest elements.
 
 \subsection{} Find a recurrence relation for the worst-case running time of this algorithm, then solve it using the Master Theorem.
 $$ T(n) = 3 \cdot T( \tfrac{2}{3} n) + n^0. $$
@@ -164,13 +227,45 @@ $T(n) = \Theta ( n^{log_{\frac{3}{2}} {3}} )$
 
 \section{} Consider a monotonously decreasing function $f : \NN \rightarrow \ZZ$. We want to find:
 
-$$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ 
+$$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ \\ 
 
 Give an $O(log\ n)$ algorithm.
 
-\alg
+Clearly since we must consider a domain of infinite cardinality we cannot simply sub-divide the domain interval and proceed by computing the result for the constituent halves. Cleverly we consider the bins of exponential size, then binary search through that bin.
 
+\alg{SEARCH\_BIN}
+
+This is a simple binary search which takes a lower bound $x_1$, an upper bound$x_2$,
+and a mapping $f$ from which to map the "indices" to values. We seek to find
+the least index $x \in \NN$ such that $f(x) < 0$.
 XXX: TODO
+
+\proof
+XXX: TODO
+
+\alg{INFLECTION}
+
+Our algorithm takes as argument index $x \in \NN$ and a function $f :
+\NN \rightarrow \ZZ$. If $lastx$ is uninitialized, initialize it to $0$
+If $x$ is uninitialized, initialize it to $2$. Otherwise save $x$ in the
+variable $lastx$ and set $x = x^2$. Compute $f(x)$; if $f(x) < 0$, call
+SEARCH\_BINARY with $lastx$, $x$ and $f$ Otherwise call INFLECTION again with
+$x$, $f$ and (implicitly) $lastx$
+
+\proof
+XXX: TODO
+
+
+\subsection{Complexity}
+
+Since $f$ is a strictly decreasing function it must eventually cross the
+x-axis. Let us assume for consistent notation that this happens at some
+(unknown) point called $n$. In our algorithm we square the input $x$
+value each time, this results in the inequality: $n \leq 2^k$ where $k$
+is the number of recursions into INFLECTION. Hence we find the (clearly
+negative) value of $f(2^k)$ where $2^k \geq n$ in $\O(log\ n)$ time. After this
+we do binary search on the bin for which we know $n$ is in. And of course
+as we all know binary search runs in $O( log\ n )$ time.
 
 \section{}
 
