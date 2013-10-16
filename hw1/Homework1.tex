@@ -54,6 +54,7 @@ I would like to choose the homework heavy option.
 \maketitle
 % ----------------------------------------------------------------
 
+XXX: REVIEW
 \section{} Suppose we are given a sorted array of $n$ distinct elements
 that has been circularly shifted by $k$ elements. We want to find an
 algorithm which runs in $O(log(n))$ time to find the maximum.
@@ -97,7 +98,7 @@ pairwise sorted, that pair is the maximum and minimum.
 
 If the array consists of a single element, return that element.
 
-Let $h = \floor{n/2}$; compare the $A[0]$ and $A[h]$ elements. \\
+Let $h = \floor{ \frac{n}{2} }$; compare the $A[0]$ and $A[h]$ elements. \\
 
 Case (Less than): return the value of CIRCULAR\_MAX( $A[h..n]$ ) \\
 
@@ -111,7 +112,7 @@ element $A[h]$ then by ~\ref{cor1} the maximum occurs in the array slice
 $A[h..n]$. However if $A[0]$ is greater than $A[h]$, then, again by
 ~\ref{cor1} the maximum occurs in $A[0..(h-1)]$.
 
-\prop{The proposed algorithm runs in O(log (n)) time.}
+\prop{The proposed algorithm runs in $O(log\ n)$ time.}
 
 \proof
 
@@ -128,6 +129,7 @@ yeilds $T(n) = \Theta (\log n)$
 \\
 
 
+XXX: IN PROGRES
 \section{} If $A$ is an array of $n$ numbers. We wish to find:
 
 $$ \max_{1 \leq j<k \leq n} (A[k] - A[j]).$$
@@ -182,11 +184,11 @@ $$ \max_{0 \leq i \leq n_a -1}\ (A[n_a-1] - A[i]) + \max_{0 \leq j \leq n_b -1}\
 
 \proof 
 
-Certainly it is clear that we are finding the maximum difference between each
-array's pivot and their respective elements. It remains to show that the sum
-of these maximums in fact represnts the difference between the first and last
-elements of the maximal subarray which spans the two arrays passed as argument.
-
+Certainly it is clear that we find the maximum pairwise
+difference between each array's pivot and its respective elements. It
+remains to show that the sum of these maximums in fact repesents the
+difference between the first and last element of the maximal subarray,
+which spans the two arrays passed as argument.
 
 
 \subsection{} Provide a recurrence relation, and find an upper bound
@@ -194,7 +196,7 @@ using the Master Theorem.
 
 The recurrence relation is:
 
-$$ T( n ) = 2T(n/2) + n. $$
+$$ T( n ) = 2T(\tfrac{n}{2}) + n. $$
 
 Let me explain. We split the array in half and find the maximal subarray
 difference in both sides. We do this by calling MAX\_DIFF recursively on
@@ -208,6 +210,7 @@ means that Case 2 applies and we have $T( n ) = \Theta( n\ log\ n )$
 first two thirds of the elements in the array. Next sort the last two
 thirds of the array. Finally, sort the first two thirds again.
 
+XXX: REVIEW
 \subsection{} Provide an informal explaination of why this algorithm
 returns a sorted array. \\
 
@@ -224,7 +227,7 @@ $$ T(n) = 3 \cdot T( \tfrac{2}{3} n) + n^0. $$
 Since $\log_{\frac{3}{2}} {3} > 0$, case 3 of the Master Theorem applies, and we get
 $T(n) = \Theta ( n^{log_{\frac{3}{2}} {3}} )$
 
-
+XXX: IN PROGRESS
 \section{} Consider a monotonously decreasing function $f : \NN \rightarrow \ZZ$. We want to find:
 
 $$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ \\ 
@@ -267,6 +270,8 @@ negative) value of $f(2^k)$ where $2^k \geq n$ in $\O(log\ n)$ time. After this
 we do binary search on the bin for which we know $n$ is in. And of course
 as we all know binary search runs in $O( log\ n )$ time.
 
+
+XXX: TODO
 \section{}
 
 \subsection{} Describe O(n) time algorithms for solving l-LMPS and r-RMPS
