@@ -129,7 +129,7 @@ yeilds $T(n) = \Theta (\log n)$
 \\
 
 
-XXX: IN PROGRES
+XXX: REVIEW
 \section{} If $A$ is an array of $n$ numbers. We wish to find:
 
 $$ \max_{1 \leq j<k \leq n} (A[k] - A[j]).$$
@@ -146,8 +146,8 @@ At first I was stumped with this question, I quickly came up with
 the linear time solution, but couldn't imagine a divide and conquer
 algorithm. After all, a maximal subarray could cross any division point.
 After looking through my Undergraduate algorithms book\footnote{Thomas
-H. Cormen, "Introduction to Algorithms"}, I found an algorithm very similar
-to what follows. I found the technique used intersting, and even more so that 
+H. Cormen, "Introduction to Algorithms"}, I discovered an algorithm very similar
+to what follows. I found the technique very intersting, and even more so that 
 it is faster than the brute force method.
 
 \alg{MAX\_DIFF}
@@ -159,7 +159,7 @@ Let $h = \ceil{n/2}$ where $n$ is the length of the array. Return the following:
 \begin{align*}
   \max(\ & \text{MAX\_DIFF}( A[0..(h-1)] ), \\
         & \text{MAX\_DIFF}( A[h..(n-1)] ), \\
-        & \text{MAX\_SPANNING\_DIFF}( A[0..(h-1)], A[h..(n-1)] )\ )
+        & \text{MAX\_SPANNING\_DIFF}( h, A)\ )
 \end{align*}
 
 where MAX\_SPANNING\_DIFF is defined as follows.
@@ -167,29 +167,45 @@ where MAX\_SPANNING\_DIFF is defined as follows.
 \proof 
 
 Clearly a maximal subarray either includes an element or it does not.
-Therfore there are three possible cases. The maximal subarray occurs
+Therfore there are three possible cases: the maximal subarray occurs
 left of $h$, the maximal subarray occurs right of $h$, or the maximal
-subarray includes $A[i]$. For the first two cases, since we call
-MAX\_DIFF recursively, hence it suffices to prove only the third for the
-call of $max$ to return the correct result. However, in the third case
-we mererly call MAX\_SPANNING\_DIFF, therefore we are done.
+subarray includes $A[h]$. For the first two cases, since we call
+MAX\_DIFF recursively, it suffices to show only the third. In the third
+case we mererly call MAX\_SPANNING\_DIFF which is proven to be correct
+below with its definition, therefore we are done.
 
 \alg{MAX\_SPANNING\_DIFF}
 
-We take as argument two arrays $A$ and $B$ where their lengths are $n_a$
-and $n_b$ respectively. We return what follows by comparing each element in 
-each array with it's relevant pivot ($n_a$ and $0$ respectively)
+We take as argument an index $h$ and an array $A$. We return what
+follows by comparing each element in each half of the array with the
+center element $h$.
 
-$$ \max_{0 \leq i \leq n_a -1}\ (A[n_a-1] - A[i]) + \max_{0 \leq j \leq n_b -1}\ (A[j] - A[0]) $$
+$$ \max_{0 \leq i \leq h}\ (A[h] - A[i]) + \max_{h \leq j \leq n_b -1}\ (A[j] - A[h]). $$
+
+Which is simply:
+
+$$ A[h] - \min_{0 \leq i \leq h}\ ( A[i] ) + \max_{h \leq j \leq n_b -1}\ ( A[j] ) - A[h] $$
+
+$$ \max_{h \leq j \leq n_b -1}\ ( A[j] ) - \min_{0 \leq i \leq h}\ ( A[i] ). $$
 
 \proof 
 
-Certainly it is clear that we find the maximum pairwise
-difference between each array's pivot and its respective elements. It
-remains to show that the sum of these maximums in fact repesents the
+It remains to show that the sum of these maximums in fact repesents the
 difference between the first and last element of the maximal subarray,
-which spans the two arrays passed as argument.
+which spans the two arrays passed as argument. Let us first consider the
+left maximal subarray.
 
+Suppose towards a contradiction that the algorithm does not produce the
+maximal subarray difference. Then there exists some $x \in [0,n_a] \cap
+\ZZ$ such that:
+
+$$ A[n_a] - A[x] > A[n_a] - A[i]. $$
+
+But then:
+
+$$ A[x] < A[i]. $$
+
+$\Rightarrow\Leftarrow$
 
 \subsection{} Provide a recurrence relation, and find an upper bound
 using the Master Theorem.
@@ -198,19 +214,20 @@ The recurrence relation is:
 
 $$ T( n ) = 2T(\tfrac{n}{2}) + n. $$
 
-Let me explain. We split the array in half and find the maximal subarray
+We split the array in half and find the maximal subarray
 difference in both sides. We do this by calling MAX\_DIFF recursively on
-both sides. Additionally we must scan each of the n elements at the current
+the two sides. Additionally we must scan each of the n elements at the current
 level to find the maximum spanning differnce.
 
 By invoking the Master Theorem we see that $a=2$, $b=2$, and $c=1$ which
 means that Case 2 applies and we have $T( n ) = \Theta( n\ log\ n )$
 
+
+XXX: REVIEW
 \section{} Consider the following sorting algorithm: First sort the
 first two thirds of the elements in the array. Next sort the last two
 thirds of the array. Finally, sort the first two thirds again.
 
-XXX: REVIEW
 \subsection{} Provide an informal explaination of why this algorithm
 returns a sorted array. \\
 
@@ -266,12 +283,12 @@ x-axis. Let us assume for consistent notation that this happens at some
 (unknown) point called $n$. In our algorithm we square the input $x$
 value each time, this results in the inequality: $n \leq 2^k$ where $k$
 is the number of recursions into INFLECTION. Hence we find the (clearly
-negative) value of $f(2^k)$ where $2^k \geq n$ in $\O(log\ n)$ time. After this
-we do binary search on the bin for which we know $n$ is in. And of course
-as we all know binary search runs in $O( log\ n )$ time.
+negative) value of $f(2^k)$ where $2^k \geq n$ in $O(log\ n)$ time.
+After this we do binary search on the bin for which we know $n$ is in.
+And of course as we all know binary search runs in $O( log\ n )$ time.
 
 
-XXX: TODO
+XXX: IN PROGRESS
 \section{}
 
 \subsection{} Describe O(n) time algorithms for solving l-LMPS and r-RMPS
