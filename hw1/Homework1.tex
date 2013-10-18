@@ -244,7 +244,7 @@ $$ T(n) = 3 \cdot T( \tfrac{2}{3} n) + n^0. $$
 Since $\log_{\frac{3}{2}} {3} > 0$, case 3 of the Master Theorem applies, and we get
 $T(n) = \Theta ( n^{log_{\frac{3}{2}} {3}} )$
 
-XXX: IN PROGRESS
+XXX: REVIEW
 \section{} Consider a monotonously decreasing function $f : \NN \rightarrow \ZZ$. We want to find:
 
 $$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ \\ 
@@ -255,13 +255,35 @@ Clearly since we must consider a domain of infinite cardinality we cannot simply
 
 \alg{SEARCH\_BIN}
 
-This is a simple binary search which takes a lower bound $x_1$, an upper bound$x_2$,
-and a mapping $f$ from which to map the "indices" to values. We seek to find
-the least index $x \in \NN$ such that $f(x) < 0$.
-XXX: TODO
+This is a simple binary search which takes as argument a lower bound
+$x_1$, an upper bound$x_2$, and a mapping $f$ from which to map the
+"indices" to values. We seek to find the least index $x \in \NN$ such
+that $f(x) < 0$.
+
+If $x_1 = x_2$, return $x_1$.
+
+Let $h = \floor{\tfrac{x_1 + x_2}{2}}$. If $A[h] < 0$, return
+SEARCH\_BIN with arguments $x_1$ and $h$. otherwise return 
+SEARCH\_BIN with arguments $h+1$ and $x_2$.
 
 \proof
-XXX: TODO
+
+This is essentially binary search with some slight modifications.
+Since the function is know to be strictly decreasing, we know that
+one of the following is the case:
+
+\begin{enumerate}
+
+  \item if $f(x) > 0$ then the smallest value of $x$ for which the value
+of $f$ is negative occurs at some point in the domain $y>x$.
+
+  \item If $f(x) < 0$ then the smallest value of $x$ for which the value
+  of $f$ is negative occurs at some $y \leq x$
+
+\end{enumerate}
+
+Our algorithm only considers the half of the domain in which the first negative
+value of $f$ can occur.
 
 \alg{INFLECTION}
 
@@ -269,12 +291,14 @@ Our algorithm takes as argument index $x \in \NN$ and a function $f :
 \NN \rightarrow \ZZ$. If $lastx$ is uninitialized, initialize it to $0$
 If $x$ is uninitialized, initialize it to $2$. Otherwise save $x$ in the
 variable $lastx$ and set $x = x^2$. Compute $f(x)$; if $f(x) < 0$, call
-SEARCH\_BINARY with $lastx$, $x$ and $f$ Otherwise call INFLECTION again with
-$x$, $f$ and (implicitly) $lastx$
+SEARCH\_BINARY with $lastx$, $x$ and $f$ Otherwise call INFLECTION again
+with $x$, $f$ and (implicitly) $lastx$
 
 \proof
-XXX: TODO
-
+Suppose that the first negative value $f$ occurs at $n \in \NN$.
+Since $f$ is strictly decreasing, we know that for some $x \in \NN$, $f(x) < 0$.
+We can find a bin of size at most $2^{log_{2} {n}}$ in which $n$ exists by
+squaring at each level of recursion the index for which we examine $f$.
 
 \subsection{Complexity}
 
