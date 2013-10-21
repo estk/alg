@@ -56,7 +56,6 @@ I would like to choose the homework heavy option.
 % ----------------------------------------------------------------
 
 \section{} 
-XXX: REVIEW
 
 Suppose we are given a sorted array of $n$ distinct elements
 that has been circularly shifted by $k$ elements. We want to find an
@@ -88,13 +87,13 @@ is in in $A[i..(j-1)]$ if and only if $A[i] > A[j]$
 
 \proof 
 
-Suppose $A[i] < A[j]$. Then by ~\ref{lem1}, $A[i..j]$ is sorted. Hence
+Suppose $A[i] < A[j]$, then by ~\ref{lem1}, $A[i..j]$ is sorted. Hence
 $A[j]$ is larger than every element in $A[i..(j-1)]$, therefore the maximum
 cannot be in $A[i..(j-1)]$.
 
 Conversely suppose $A[i] > A[j]$, then by ~\ref{lem1} $A[i..(j-1)]$ is
-not sorted. By the definition of a (not completely sorted) circularly
-sorted array it has one consecutive pair of elements that are not
+not sorted. By the definition of a circularly sorted (not completely
+sorted) array, it has one consecutive pair of elements that are not
 pairwise sorted, that pair is the maximum and minimum.
 
 \alg{(CIRCULAR\_MAX)}
@@ -112,14 +111,14 @@ Case (Greater than): return the value of CIRCULAR\_MAX( $A[0..(h-1)]$ ) \\
 If an array consists of a single element, clearly that element must
 be the maximum. If the first element $A[0]$ is less than the middle
 element $A[h]$ then by ~\ref{cor1} the maximum occurs in the array slice
-$A[h..n]$. However if $A[0]$ is greater than $A[h]$, then, again by
+$A[h..n]$. However if $A[0]$ is greater than $A[h]$ then, again by
 ~\ref{cor1} the maximum occurs in $A[0..(h-1)]$.
 
 \prop{The proposed algorithm runs in $O(log\ n)$ time.}
 
 \proof
 
-Since at each level of recursion we do only constant work, and are able
+Since at each level of recursion we do only constant work and are able
 to eliminate half of the array, the complexity of the algorithm is
 simply the height of the longest branch of the recursion tree. Recall
 that the height of a tree is $log_{b} (n)$ where $b$ branching factor
@@ -127,13 +126,12 @@ and $n$ is the total number of elements (including those pruned).
 Therefore the given algorithm is $\Theta( log n )$
 
 Alternatively, we could have used the Master Theorem. The recurrence
-relation is $T(n) = T(\frac{n}{2}) + n^0$ hence Case 2 applies and
-yeilds $T(n) = \Theta (\log n)$
+relation is $T(n) = T(\frac{n}{2}) + n^0$, hence Case 2 applies and
+yields $T(n) = \Theta (\log n)$
 \\
 
 
 \section{}
-XXX: REVIEW
 
 If $A$ is an array of $n$ numbers. We wish to find:
 
@@ -148,34 +146,34 @@ element. Return the largest (positive) value of these differences.
 \subsection{} Provide a more efficient algorithm.
 
 At first I was quite stumped with this question. After all, a maximal
-subarray could cross any division point. After looking through my
+sub-array could cross any division point. After looking through my
 Undergraduate algorithms book\footnote{Thomas H. Cormen, "Introduction
 to Algorithms"}, I discovered an algorithm very similar to what follows.
-I found the technique very intersting, and even more so that it is
+I found the technique very interesting, especially since it is
 faster than the brute force method.
 
 \alg{MAX\_DIFF}
 
-If the array taken as argument is empty or contains only a single element, return zero.
+If the array taken as argument is empty or contains only a single element then return zero.
 
 Let $h = \ceil{n/2}$ where $n$ is the length of the array. Return the following:
 
 \begin{align*}
   \max(\ & \text{MAX\_DIFF}( A[0..(h-1)] ), \\
         & \text{MAX\_DIFF}( A[h..(n-1)] ), \\
-        & \text{MAX\_SPANNING\_DIFF}( h, A)\ )
+        & \text{MAX\_SPANNING\_DIFF}( h, A)\ ),
 \end{align*}
 
 where MAX\_SPANNING\_DIFF is defined as follows.
 
 \proof 
 
-Clearly a maximal subarray either includes an element or it does not.
-Therfore there are three possible cases: the maximal subarray occurs
-left of $h$, the maximal subarray occurs right of $h$, or the maximal
-subarray includes $A[h]$. For the first two cases, since we call
+Clearly a maximal sub-array either includes an element or it does not.
+Therefore there are three possible cases: the maximal sub-array occurs
+left of $h$, the maximal sub-array occurs right of $h$, or the maximal
+sub-array includes $A[h]$. For the first two cases, since we call
 MAX\_DIFF recursively, it suffices to show only the third. In the third
-case we mererly call MAX\_SPANNING\_DIFF which is proven to be correct
+case we merely call MAX\_SPANNING\_DIFF which is proven to be correct
 below with its definition, therefore we are done.
 
 \alg{MAX\_SPANNING\_DIFF}
@@ -194,13 +192,13 @@ $$ \max_{h \leq j \leq n_b -1}\ ( A[j] ) - \min_{0 \leq i \leq h}\ ( A[i] ). $$
 
 \proof 
 
-It remains to show that the sum of these maximums in fact repesents the
-difference between the first and last element of the maximal subarray,
-which spans the two arrays passed as argument. Let us first consider the
-left maximal subarray.
+It remains to show that the sum of these maximums in fact represents the
+difference between the first and last element of the maximal sub-array
+(which spans the two arrays passed as argument.) Let us first consider the
+left maximal sub-array.
 
 Suppose towards a contradiction that the algorithm does not produce the
-maximal subarray difference. Then there exists some $x \in [0,n_a] \cap
+maximal sub-array difference. Then there exists some $x \in [0,n_a] \cap
 \ZZ$ such that:
 
 $$ A[n_a] - A[x] > A[n_a] - A[i]. $$
@@ -218,53 +216,56 @@ The recurrence relation is:
 
 $$ T( n ) = 2T(\tfrac{n}{2}) + n. $$
 
-We split the array in half and find the maximal subarray
+We split the array in half and find the maximal sub-array
 difference in both sides. We do this by calling MAX\_DIFF recursively on
-the two sides. Additionally we must scan each of the n elements at the current
-level to find the maximum spanning differnce.
+the two sides. Additionally we must scan each of the $n$ elements at the current
+level to find the maximum spanning difference.
 
 By invoking the Master Theorem we see that $a=2$, $b=2$, and $c=1$ which
 means that Case 2 applies and we have $T( n ) = \Theta( n\ log\ n )$
 
 
 \section{} 
-XXX: REVIEW
 
 Consider the following sorting algorithm: First sort the
 first two thirds of the elements in the array. Next sort the last two
 thirds of the array. Finally, sort the first two thirds again.
 
-\subsection{} Provide an informal explaination of why this algorithm
+\subsection{} Provide an informal explanation of why this algorithm
 returns a sorted array. \\
 
-In short, this works because each partition can allow the swap of up to
-half of it's elements. Consider the worst case where each element in the
-bottom $\frac{1}{3}$ is strictly larger than the top $\frac{1}{3}$. It
-is then possible to move the entire bottom $\frac{1}{3}$ into the top
-$\frac{1}{3}$ exactly because its length is half of the subarray hence
-can be swapped. Similarly for smallest elements.
+In short, the algorithm works because each partition can allow the
+exchange of up to half of it's elements. Consider the worst case where
+each element in the bottom $\frac{1}{3}$ is strictly larger than the
+top $\frac{1}{3}$. It is then possible to move the entire bottom
+$\frac{1}{3}$ into the top $\frac{1}{3}$ exactly because its length
+is half of the sub-array, hence can it may be swapped. We notice that
+a similar situation occurs for the smallest elements.
 
-\subsection{} Find a recurrence relation for the worst-case running time of this algorithm, then solve it using the Master Theorem.
+\subsection{} Find a recurrence relation for the worst-case running time
+of this algorithm, then solve it using the Master Theorem.
+
 $$ T(n) = 3 \cdot T( \tfrac{2}{3} n) + n^0. $$
 
 Since $\log_{\frac{3}{2}} {3} > 0$, case 3 of the Master Theorem applies, and we get
 $T(n) = \Theta ( n^{log_{\frac{3}{2}} {3}} )$
 
 \section{} 
-XXX: REVIEW
 
-Consider a monotonously decreasing function $f : \NN \rightarrow \ZZ$. We want to find:
+Consider a monotonously decreasing function $f : \NN \rightarrow \ZZ$. In 
+logarithmic time we want to find:
 
-$$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ \\ 
+$$ n = \min (\{i \in \NN \mid f(i) \leq 0 \}).$$ 
 
-Give an $O(log\ n)$ algorithm.
-
-Clearly since we must consider a domain of infinite cardinality we cannot simply sub-divide the domain interval and proceed by computing the result for the constituent halves. Cleverly we consider the bins of exponential size, then binary search through that bin.
+Clearly since we must consider a domain of infinite cardinality we
+cannot simply sub-divide the domain interval and proceed by computing
+the result for the constituent halves. Cleverly we consider the bins of
+exponential size, then binary search through that bin.
 
 \alg{SEARCH\_BIN}
 
 This is a simple binary search which takes as argument a lower bound
-$x_1$, an upper bound$x_2$, and a mapping $f$ from which to map the
+$x_1$, an upper bound $x_2$, and a mapping $f$ from which to map the
 "indices" to values. We seek to find the least index $x \in \NN$ such
 that $f(x) < 0$.
 
@@ -296,17 +297,17 @@ value of $f$ can occur.
 \alg{INFLECTION}
 
 Our algorithm takes as argument index $x \in \NN$ and a function $f :
-\NN \rightarrow \ZZ$. If $lastx$ is uninitialized, initialize it to $0$
-If $x$ is uninitialized, initialize it to $2$. Otherwise save $x$ in the
-variable $lastx$ and set $x = x^2$. Compute $f(x)$; if $f(x) < 0$, call
+\NN \rightarrow \ZZ$. If \texttt{lastx} is uninitialized, initialize it to $0$.
+If \texttt{x} is uninitialized, initialize it to $2$. Otherwise save \textt{x} in the
+variable \textt{lastx} and set $x = x^2$. Compute $f(x)$; if $f(x) < 0$, call
 SEARCH\_BINARY with $lastx$, $x$ and $f$ Otherwise call INFLECTION again
-with $x$, $f$ and (implicitly) $lastx$
+with $x$, $f$ and (implicitly) \texttt{lastx}.
 
 \proof
 Suppose that the first negative value $f$ occurs at $n \in \NN$.
 Since $f$ is strictly decreasing, we know that for some $x \in \NN$, $f(x) < 0$.
 We can find a bin of size at most $2^{log_{2} {n}}$ in which $n$ exists by
-squaring at each level of recursion the index for which we examine $f$.
+squaring, at each level of recursion, the index for which we examine $f$.
 
 \subsection{Complexity}
 
@@ -321,7 +322,6 @@ And of course as we all know binary search runs in $O( log\ n )$ time.
 
 
 \section{}
-XXX: REVIEW
 
 \subsection{} Describe O(n) time algorithms for solving l-LMPS and r-RMPS
 
@@ -342,9 +342,9 @@ the corresponding index, it will return the correct index. We now show that the 
 maintained is correct.
 
 If $l=n-1$ then there is only one element in any possible sum, hence the
-LMPS is $A[l]$.
-Suppose we are on the $k$th interation of our algorithm and that the
-values in \texttt{maxSum} and \texttt{sum} are correct for the subarray $A[l..(l+k-1)]$.
+LMPS is $A[l]$. Suppose we are on the $k$th interation of our algorithm
+and that the values in \texttt{maxSum} and \texttt{sum} are correct for
+the sub-array $A[l..(l+k-1)]$.
 
 There are three cases to consider:
 
@@ -354,10 +354,10 @@ There are three cases to consider:
   \item When we update \texttt{sum}, its value decreases.
 \end{enumerate}
 
-In the first, \texttt{maxSum} is updated to reflect the correct answer.
-In the second and third, \texttt{maxSum} is not updated so as not to decrease the maxSum. \\
+In the first case, \texttt{maxSum} is updated to reflect the correct answer.
+In the second and third cases, \texttt{maxSum} is not updated so as not to decrease the maxSum. \\
 
-The proof and algorithm for $r$-RMPS are \textbf{exactly} the same with the exeption that instead
+The proof and algorithm for $r$-RMPS are \textbf{exactly} the same with one exception: instead
 we start at a given $r \in [0,n] \cap \ZZ$ and iterate left, down the array,
 
 \rmk Clearly since we traverse the array only once an perform a constant number of operations
@@ -371,7 +371,8 @@ Given an array with length $n$, we iterate over the array maintaining a
 variable \texttt{mps} which holds a pair: the greatest return value of prior calls to l-LMPS,
 and the pair of indices which produced it. For example, for the $l$th element with $l$-LMPS
 returning \texttt{maxSum = (sum, i)}. We set
-\texttt{ mps = maxFirst( mps, ((fst maxSum), l, (snd maxSum)) }. 
+
+$$\texttt{ mps = maxFirst( mps, ((fst maxSum), l, (snd maxSum)) }. $$
 
 \proof
 
@@ -381,12 +382,13 @@ considered all partial sums exactly when we have evaluated $l$-MPS for
 each index. The above algorithm does exactly this.
 
 
-\subsection{} Given O(n) time algorithms for l-LMPS and r-RMPS describe an O(n log n) divide-and- conquer algorithm for MPS.
+\subsection{} Given $O(n)$ time algorithms for l-LMPS and r-RMPS
+describe an $O(n\ log n)$ divide-and-conquer algorithm for MPS.
 
 \alg{MPS}
 
-If the array passed as argument has only one element, return the pair (element, (0,0)).
-Suppose we have an array of length n. Let our pivot $p = \floor{ \frac{n}{2} }$.
+If the array passed as argument has only one element, return the pair \texttt{(element, (0,0))}.
+Suppose we have an array of length $n$, let our pivot $p = \floor{ \frac{n}{2} }$.
 Return:
 
 $$ \maxFst (\ MPS( A[0..(p-1)], MPS( A[(p+1)..n], MPSpan(p, A) ) )\ ). $$
@@ -398,47 +400,44 @@ If the array has only one element, clearly we return the correct partial sum.
 As in problem \#2 we have three cases:
 
 \begin{enumerate}
-  \item The maximal subarray occurs strictly left of the pivot.
-  \item The maximal subarray occurs strictly right of the pivot.
-  \item The maximal subarray includes the pivot.
+  \item The maximal sub-array occurs strictly left of the pivot.
+  \item The maximal sub-array occurs strictly right of the pivot.
+  \item The maximal sub-array includes the pivot.
 \end{enumerate}
 
-In our algorithm we take the maximum partial sum returned by asuming
+In the above algorithm, we take the maximum partial sum returned by assuming
 each of the above cases respectively. We may assume inductively that
-\texttt{MPS} is correct for the left and right subarray. It then remains
+\texttt{MPS} is correct for the left and right sub-array. It then remains
 to show that \texttt{MPSpan}.
 
 \alg{MPSpan}
 
 We take as argument a pivot $p$.
-Recall that LMPS and RMPS returns a pair, a sum, and the indecies
+Recall that LMPS and RMPS returns a pair, a sum, and the indices
 We evaluate $p$-LMPS, and $p$-RMPS, and return the sum of the two
 partial sums and their respective indices.
 
-\texttt{( (fst RMPS) + (fst LMPS) - A[p], ((snd RMPS, snd LMPS) )}.
+\texttt{( (fst RMPS) + (fst LMPS) - A[p], (snd RMPS, snd LMPS) )}.
 
 \proof
 
-Since in LMPS or RMPS must at least include the pivot, we always will double
+Since in LMPS or RMPS must at least include the pivot, we will always double
 count $A[p]$, hence we subtract it from the return sum. The MPS which contains
 $p$ may be broken up into its component parts:
 
 \begin{align*}
   &\sum{\text{elements left of $p$}}\ + A[p] +\ \sum{\text{elements right of $p$}}. \\
   \intertext{Which is simply equal to:}
-  &\sum{\text{elements left of and including $p$}}\ +\ \sum{\text{elements right of and including $p$}}\ + A[p]
+  &\sum{\text{elements left of and including $p$}}\ +\ \sum{\text{elements right of and including $p$}}\ + A[p].
 \end{align*}
 
 Which is exactly what our algorithm returns.
 
-\begin{enumerate}
-
 \section{BONUS: No}
-XXX: REVIEW
 
 \prop
 
-There exist some denomination $\{ c_1, c_2, \ldots , c_n \}$ (ie $c_1 < c_2 < \ldots < c_n$)
+There exists some denomination $\{ c_1, c_2, \ldots , c_n \}$ (ie $c_1 < c_2 < \ldots < c_n$)
 in which the at least one of the following
 inequalities does not hold, and yet a greedy algorithm still produces an
 optimal solution.
@@ -466,7 +465,7 @@ There are two cases:
   \item $g_i > o_i$
 \end{enumerate}
 
-If (1), since greedy takes the largest coin without overdispensing, $\sum O > x$.
+If (1), since greedy takes the largest coin without over dispensing, $\sum O > x$.
 If (2), again we have cases:
 
 \begin{enumerate}
