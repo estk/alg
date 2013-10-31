@@ -1,0 +1,229 @@
+% ----------------------------------------------------------------
+% AMS-LaTeX Paper ************************************************
+% **** -----------------------------------------------------------
+\documentclass{amsart}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{inconsolata}
+\usepackage[shortlabels]{enumitem}
+% \usepackage{xy}
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+% THEOREMS -------------------------------------------------------
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem*{claimstar}{Claim}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{alg}[thm]{Algorithm}
+\newtheorem*{algstar}{Algorithm}
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem*{rmkstar}{Remark}
+\numberwithin{equation}{section}
+% MATH -----------------------------------------------------------
+\newcommand{\Matrix}[4]{ \left( \begin{array}{cc}  #1 & #2 \\  #3 & #4 \\ \end{array} \right) }
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\isom}{\cong}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\let\null\varnothing
+
+\pagestyle{plain}
+% ----------------------------------------------------------------
+\begin{document}
+\title[]{Algorithms Homework 1}%
+\author{Evan Simmons \\
+        Dept. of Mathematics \& Computer Science \\ University of California Santa Cruz}%
+%\date{}
+%\dedicatory{}%
+%\commby{}%
+\renewcommand{\abstractname}{Homework Option}
+% ----------------------------------------------------------------
+\begin{abstract}
+I have chosen the homework heavy option.
+\end{abstract}
+\maketitle
+% ----------------------------------------------------------------
+
+\section{} Let $G = G(V, E)$ be an arbitrary, connected, undirected graph with
+vertex set $V$ and edge set $E$, where each $e \in E$ has a distinct
+positive length le. Let $f : \RR^+ \rightarrow \RR^+$ be strictly
+increasing. We want to compute a subset of edges $S \subseteq E$ such
+that:
+
+\begin{enumerate}[(a)]
+  \item $G(V,S)$ is connected.
+  \item $\sum_{e \in S} f(l_e)$ is as small as possible.
+\end{enumerate}
+
+What is the smallest number of evaluations of $f$ needed to do this?
+
+\rmkstar We consider the output of this function for each edge length just
+as we would the edge weight in the minimum spanning tree problem since
+it is exactly the quantity we seek to minimize.
+
+\claimstar We must evaluate the function $f$ at \textit{least} once for every
+edge in a cycle.
+
+\proof Consider an arbitrary edge $e$ in our graph.
+
+If it is not in a cycle, removing it would render the graph
+disconnected, therefore we need not consider $f(e)$.
+
+If it is in a cycle, assume towards a contradiction that there exists
+an optimal solution $G(V,S)$ that does not evaluate $f(e)$. Since we
+are free to choose any one edge in a cycle to remove and still preserve
+connectetness, if $f(e)$ happens to be larger than the edge removed in
+$G(V,S)$, then clearly the solution is not in fact optimal.
+
+\section{} Give an algorithm that given a sequence of $n$ positive real numbers $W = w_1, w_2,
+\ldots, w_n$ and a real number $B$ partitions $W$ into contiguous subsequences, i.e.,
+
+$$ S = \{ (w_1,w_2,\ldots,w_k), (w_{k+1},w_{k+2},\ldots,w_l),\ldots,(w_q,w_{q+1},\ldots,w_n) \} $$
+
+such that the sum of the numbers in each subsequence is at most $B$ while
+minimizing the number of subsequences. (Assume $w_i \leq B$.)
+
+\algstar We iterate through the sequence of $w$'s in order. If our set
+of subseqences is empty, we create a new subsequence and append the
+current element. Otherwise, for each $w_i$ we attempt to add it to
+the last subsequence in $S$, if this fails by making the sum of the
+subseqence more than $B$, we instead create a new subsequence and append
+$w_i$.
+
+\proof If $W = \null$ then we have a set with an empty sequence, and
+are done. Assume towards a contradiction that for some $W$ we have an
+optimal solution $O$ which differs from the solution produced by the
+above algorithm $S$. Let $w_j$ denote the element of first difference,
+which corresponds to the subsequence that $w_j$ is placed in. There are
+two cases, in the first:
+
+\begin{align*}
+  S &= \{ \ldots, \overbrace{\{w_k, \ldots  w_{j-1}\} }^{S_i}, \{w_j, w_{j+1},\ldots \}, \ldots \} \\
+  O &= \{ \ldots, \underbrace{\{w_k, \ldots w_{j-1}, w_j \}}_{O_i}, \{w_{j+1},\ldots \}, \ldots \}.
+\end{align*}
+
+But we immediately see that the sum of $O_i > B$ by the definition of our
+algorithm.$\Rightarrow \Leftarrow$
+
+In the second case:
+
+\begin{align*}
+  S &= \{ \ldots, \overbrace{\{w_k, \ldots  w_{j-1}, w_j \} }^{S_i}, \{w_{j+1},\ldots \}, \ldots \} \\
+  O &= \{ \ldots, \underbrace{\{w_k, \ldots w_{j-1} \}}_{O_i}, \{ w_j, w_{j+1},\ldots \}, \ldots \}.
+\end{align*}
+
+But then we have shown that for the first $j$ elements, our algorithm does better than
+that of optimal. $\Rightarrow \Leftarrow$
+
+Hence the output of our algorithm is the unique optimal solution.
+
+\rmkstar Clearly our algorithm runs in $O(n)$ time since we traverse the
+set $W$ once.
+
+\section{}
+
+We wish to manufacture n distinct hardware items. Each item needs to go
+through 3 stages of processing. The first, and most important stage,
+called \textit{design} can only be performed by our master designer who works
+by starting work on an item, designing it through to the end, and only
+then starting on another item. The remaining two phases, called \textit{assembly}
+and \textit{testing}, are outsourced and for each of them there is an infinite
+supply of people who can perform the corresponding task as soon as it is
+assigned to them. Naturally, each item first needs to be designed, then
+assembled, and then tested.
+
+Each item $i$ requires $d_i$ hours of design, $a_i$ hours of assembly, and $t_i$
+hours of testing. We are interested in determining the order in which we
+should design the items so that we minimize the time by which all items
+will be ready.
+
+Give a $O(n\ log\ n)$ algorithm which takes as input $n$ triples
+$(d_i,a_i,t_i)$ and determines the optimal design order.
+
+\claimstar It is sufficient to start the jobs in order of the sum of
+their respective assembly and testing times.
+
+XXX: TODO
+\proof Assume towards a contradiction that there exists an optimal
+schedule $\sigma$ whose latest finishing job ends before the
+aforementioned schedule $\tau$. Let $l (s)$ denote the latest
+finishing job of any schedule $s$.
+
+\alg We employ mergesort wiht the comparator function that compares
+the sum of the assembly and testing times of each element.
+
+\section{} Let $G = G(V, E)$ be a directed graph representing a
+road network. That is, an arc $(u, v)$ from vertex $u$ to vertex
+$v$ corresponds to a road connecting location $u$ with location $v$
+directly. Going beyond the standard shortest-path setting, we will now
+also take into account traffic by accepting that the amount of time it
+takes to cross an arc $e = (u, v)$ depends on the time that one starts
+of at $u$. Specifically, we will assume that based on past observations
+of traffic patterns we have for each arc $e = (u, v)$ a function $g_e$
+which takes as input the time one leaves $u$ and returns the time that
+they will arrive at $v$. The functions are such that for every arc $e$,
+we have $g_e(t) \geq t$ for every time $t$ and $g_e(t_1) < g_e(t_2)$,
+whenever $t_1 < t_2$.
+
+Modify Dijkstra’s algorithm to get a $O(|E|\cdot log\ |E|)$ algorithm which
+finds the soonest that one can reach a given vertex $t$ of $G$ if they
+leave a given vertex $s$ of $G$ at a given time $t_0$.
+
+\claimstar We can simply use Dijkstra's algorithm while maintaining a time
+at which we reached each node to pass to the $g$ function when we
+explore its edges.
+
+XXX: TODO
+\algstar Not sure about this.
+
+\proof Of correctness
+
+\proof Of time
+
+
+\section{} Let $G = G(V,E)$ be an arbitrary, connected, undirected graph
+with vertex set $V$ and edge set $E$. Assume that each $e \in E$ has a
+distinct positive length length. Define \textit{tediousness} of any path
+$P$ in $G$ to be the length of the longest edge in tediousness of any
+path $P$ in $G$ to be the length of the longest edge in $P$. Define the
+\textit{tediousness} between vertices $u$ and $v$ to be the tediousness
+of the least tedious path connecting $u$ and $v$ in $G$.
+
+\textbf{Fun Subgraph Problem (FSP).} Find a subgraph of edges $S \subseteq E$ such that:
+
+\begin{enumerate}[(a)]
+  \item $G(V,S)$ is connected.
+  \item $\sum_{e \in S} l_e$ is as small as possible.
+  \item For every pair of vertices $u,v \in V$, the \textit{tediousness} between $u,v$ in $G(V,S)$ 
+    is no greater than the \textit{tediousness} between $u,v$ in $G(V,E)$.
+\end{enumerate}
+
+Prove or disprove the following:
+
+XXX: TODO
+\subsection{}
+
+\subsection{}
+
+\subsection{}
+
+\end{document}
