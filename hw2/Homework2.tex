@@ -18,6 +18,7 @@
 \newtheorem{thm}{Theorem}[section]
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{lem}[thm]{Lemma}
+\newtheorem*{lemstar}{Lemma}
 \newtheorem{prop}[thm]{Proposition}
 \newtheorem{claim}[thm]{Claim}
 \newtheorem*{claimstar}{Claim}
@@ -76,23 +77,19 @@ that:
 
 What is the smallest number of evaluations of $f$ needed to do this?
 
-\rmkstar We consider the output of this function for each edge length just
-as we would the edge weight in the minimum spanning tree problem since
-it is exactly the quantity we seek to minimize.
+\claimstar We need not evaluate $f$ at all. Further, finding the MST
+with respect to the $l_e$'s is equivalent to finding the MST with
+respect to $f(l_e)$.
 
-\claimstar We must evaluate the function $f$ at \textit{least} once for every
-edge in a cycle.
-
-\proof Consider an arbitrary edge $e$ in our graph.
-
-If it is not in a cycle, removing it would render the graph
-disconnected, therefore we need not consider $f(e)$.
-
-If it is in a cycle, assume towards a contradiction that there exists
-an optimal solution $G(V,S)$ that does not evaluate $f(e)$. Since we
-are free to choose any one edge in a cycle to remove and still preserve
-connectetness, if $f(e)$ happens to be larger than the edge removed in
-$G(V,S)$, then clearly the solution is not in fact optimal.
+\proof Consider the sorted sequences of lengths $L$ and outputs of
+functions $F$. It has been shown that Kruskal's algorithm determines
+the minimal spanning tree for a weighted graph. By the definition of
+strictly increasing,
+$$ x_1 < x_2\ \Rightarrow\ f(x_1) < f(x_2), $$
+the ordering of the inputs is preserved. Hence kruskal's algorithm
+takes the same first $k$ edges, producing identical trees. Therefore
+we need only compute the MST with Kruskal's where edge weights equal edge
+length.
 
 \section{} Give an algorithm that given a sequence of $n$ positive real numbers $W = w_1, w_2,
 \ldots, w_n$ and a real number $B$ partitions $W$ into contiguous subsequences, i.e.,
