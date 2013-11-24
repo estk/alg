@@ -86,33 +86,31 @@ functions $F$. It has been shown that Kruskal's algorithm determines
 the minimal spanning tree for a weighted graph. By the definition of
 strictly increasing,
 $$ x_1 < x_2\ \Rightarrow\ f(x_1) < f(x_2), $$
-the ordering of the inputs is preserved. Hence kruskal's algorithm
-takes the same first $k$ edges, producing identical trees. Therefore
+the ordering of the inputs is preserved. Since kruskal's algorithm
+takes the same first $k$ edges, it produces identical trees. Therefore
 we need only compute the MST with Kruskal's where edge weights equal edge
 length.
 
 \section{} Give an algorithm that given a sequence of $n$ positive real numbers $W = w_1, w_2,
-\ldots, w_n$ and a real number $B$ partitions $W$ into contiguous subsequences, i.e.,
-
+\ldots, w_n$ and a real number $B$ partitions $W$ into contiguous subsequences, i.e,
 $$ S = \{ (w_1,w_2,\ldots,w_k), (w_{k+1},w_{k+2},\ldots,w_l),\ldots,(w_q,w_{q+1},\ldots,w_n) \} $$
 
 such that the sum of the numbers in each subsequence is at most $B$ while
 minimizing the number of subsequences. (Assume $w_i \leq B$.)
 
 \algstar We iterate through the sequence of $w$'s in order. If our set
-of subseqences is empty, we create a new subsequence and append the
-current element. Otherwise, for each $w_i$ we attempt to add it to
-the last subsequence in $S$, if this fails by making the sum of the
-subseqence more than $B$, we instead create a new subsequence and append
+of subsequences is empty, we create a new subsequence and append the
+current element. Otherwise, for each $w_i$, we attempt to add it to
+the last subsequence in $S$. If this fails by making the sum of the
+subsequence more than $B$, we instead create a new subsequence and append
 $w_i$.
 
-\proof If $W = \null$ then we have a set with an empty sequence, and
+\proof If $W = \null$ then we have a set with an empty sequence and
 are done. Assume towards a contradiction that for some $W$ we have an
 optimal solution $O$ which differs from the solution produced by the
 above algorithm $S$. Let $w_j$ denote the element of first difference,
 which corresponds to the subsequence that $w_j$ is placed in. There are
 two cases, in the first:
-
 \begin{align*}
   S &= \{ \ldots, \overbrace{\{w_k, \ldots  w_{j-1}\} }^{S_i}, \{w_j, w_{j+1},\ldots \}, \ldots \} \\
   O &= \{ \ldots, \underbrace{\{w_k, \ldots w_{j-1}, w_j \}}_{O_i}, \{w_{j+1},\ldots \}, \ldots \}.
@@ -122,7 +120,6 @@ But we immediately see that the sum of $O_i > B$ by the definition of our
 algorithm.$\Rightarrow \Leftarrow$
 
 In the second case:
-
 \begin{align*}
   S &= \{ \ldots, \overbrace{\{w_k, \ldots  w_{j-1}, w_j \} }^{S_i}, \{w_{j+1},\ldots \}, \ldots \} \\
   O &= \{ \ldots, \underbrace{\{w_k, \ldots w_{j-1} \}}_{O_i}, \{ w_j, w_{j+1},\ldots \}, \ldots \}.
@@ -159,14 +156,24 @@ $(d_i,a_i,t_i)$ and determines the optimal design order.
 \claimstar It is sufficient to start the jobs in order of the sum of
 their respective assembly and testing times.
 
-XXX: TODO
-\proof Assume towards a contradiction that there exists an optimal
-schedule $\sigma$ whose latest finishing job ends before the
-aforementioned schedule $\tau$. Let $l (s)$ denote the latest
-finishing job of any schedule $s$.
+\proof Let us call each product's $assembly + test$ quantity it's
+\textit{tail}. Suppose there exists an optimal schedule $\sigma$ such
+that the design phases are not ordered in descending size of each
+product's \textit{tail}.
 
-\alg We employ mergesort wiht the comparator function that compares
-the sum of the assembly and testing times of each element.
+Consider the last designed product $p$ and any preceding products
+which have a smaller \textit{tail}. Of those with a smaller tail take
+the one with the least \textit{tail} $p'$ and swap its scheduling
+order with $p$. We see that the new schedule $\sigma'$ is no longer
+than $\sigma$. If we apply this swapping recursively on the prefix
+of $\sigma'$, we end up with schedule such that each job is ordered
+descendingly with respect to the size of its tail and takes no more
+time than $\sigma$.
+
+\alg We employ mergesort with the comparator function that returns the
+comparison of the sum of the assembly and testing times of each element.
+Since the sum and compare operations are independent of input size, this
+runs in $O(n\ log\ n)$
 
 \section{} Let $G = G(V, E)$ be a directed graph representing a
 road network. That is, an arc $(u, v)$ from vertex $u$ to vertex
@@ -182,19 +189,71 @@ we have $g_e(t) \geq t$ for every time $t$ and $g_e(t_1) < g_e(t_2)$,
 whenever $t_1 < t_2$.
 
 Modify Dijkstra’s algorithm to get a $O(|E|\cdot log\ |E|)$ algorithm which
-finds the soonest that one can reach a given vertex $t$ of $G$ if they
+finds the soonest that one can reach a given vertex $\textbf{u}$ of $G$ if they
 leave a given vertex $s$ of $G$ at a given time $t_0$.
 
-\claimstar We can simply use Dijkstra's algorithm while maintaining a time
-at which we reached each node to pass to the $g$ function when we
-explore its edges.
+\claimstar We can simply use Dijkstra's algorithm (calling distance
+time) since $g_e(t) \geq t$ and strictly increasing are exactly the
+properties that enabled Dijkstra's in the first place.
 
-XXX: TODO
-\algstar Not sure about this.
+% \proof The problem given is exactly that solved by Dijkstra's except
+% since we are dealing with time, exploring a node at different times
+% results in different weights. Specifically there could exist a shorter
+% path between an arbitrary node and the next node by "delaying" arrival
+% time.
 
-\proof Of correctness
+\algstar{DIJKSTRA\_TIME} We maintain a set of explored nodes $S$ for
+which we have determined the shortest time to arrive at that node from
+$s$. Initialize $S=\{s\}$, and $t(s) = t_0$. Let the current node be
+denoted by $v$. We consider the nodes that its edges touch, and the
+resulting total times from $s$ to the new nodes. If a newly explored
+edge yields a shorter time to a vertex already explored, record the
+new time. Add newly explored vertices (and their discovered path time)
+to the list of explored vertices. If $u$ is the node with the shortest
+path, return the path time to $u$. Otherwise set the current node to
+that with the shortest path from $s$ and recurse.
 
-\proof Of time
+
+% If all edges have been.
+% Otherwise we consider the weights of all the edges $E_v$ emanating
+% from the given vertex $v$. Let $t$ be the time at which we reached $v$
+% (which is starts at $t_0$. We then add $e_i$ to the list of explored nodes
+% where: 
+% $$ e_i \in E_v \text{ and } g_{e_i}(t) = \min_{e \in E_v \cup E_s}{ g_{e}(t)}. $$
+% 
+% Additionally we record the output of $g_{e_i}(t)$ as the time at
+% which we reached $e_i$. We then call DIJKSTRA\_TIME recursively with the
+% current node, and explored nodes.
+%  Let $P' = P\ \backslash\ \{(x,y)\}$.
+% traversing an edge always adds to the time, there is no edge which will take us back
+% in time between $x$ and $u$, 
+
+\rmkstar Since $g$ is strictly increasing, any path that arrives to an arbitrary node
+later than another path with the same tail will always arrive later.
+
+\proof
+If $|S| = 1$, $t = 0$.
+Suppose for $|S| = k \geq 1$ that for each node $\in S$ $t(u)$ is the shortest path from $s$
+to $u$ for any $u$ in $S$. Let $w$ be the next node added to $S$ via edge $(u,w)$. Let
+ $\pi(w)$ be the length of the path from $s$ to $w$. It remains to show that this is in
+fact shorter than any other path $P$ from $s$ to $w$. Let $(x,y)$ be an edge in $P$
+where $x \in S$, but $y \notin S$. Since we always choose the shortest $s$- path, by via $P$
+we arrive at $y$ later than we arrived at $u$. Because $g(t) \geq t$ traversing edges
+between $x$ and $u$ cannot be any less than the time at $y$. 
+
+\proof DIJKSTRA\_TIME has the same recurrence relation as Dijkstra's. As in Dijkstra's
+algorithm, considering the edges from the current node takes constant time for each node.
+Since this is the only difference, we apply the Master Theorem just as we did for 
+Dijkstra's. It has been shown that at each explored vertex, if we store the time
+to each vertex from the root, we can find the minimum in $O(log\ |V|)$ time. Since
+we must consider $|V|$ vertices, the time to do this for our graph takes $O(|V|\ log\ |V|)$.
+However, to have had the priority queue of vertices in the first place, we will have
+had to explore all edges from all explored vertices. Eventually at termination, we
+will have explored all edges once (since they have a single originator). Insertion
+of the terminating vertex takes $O(log\ |V|)$ time. Therefore, maintaining the
+priority queue takes $O(|E|\ log\ |V|)$. Overall, we have an upper bound of:
+$ O(|E|\ log\ |V|\ +\ |E|\ log\ |E|) $, but since for connected graphs $V \in O(|E|)$,
+we have: DIJKSTRA\_TIME $\in O(|E|\ log\ |E|)$.
 
 
 \section{} Let $G = G(V,E)$ be an arbitrary, connected, undirected graph
@@ -216,11 +275,24 @@ of the least tedious path connecting $u$ and $v$ in $G$.
 
 Prove or disprove the following:
 
-XXX: TODO
-\subsection{}
+\subsection{} If $S$ is the set of edges in the MST of $G$, then condition 5c holds.
 
-\subsection{}
+\proof Assume towards a contradiction that the \textit{tediousness} of $G'=G(V,S)$ is greater than
+that of $G=G(V,E)$. Then, since $G'$ is acyclic the path in $G'$ between two arbitrary
+vertices $u$, $v$ is the path which did not have only the smallest of edges. But since
+we know that Kruskal's produces a MST, and in Kruscal's we remove the largest edges first,
+there can only exist in $G'$ the path between $u$, and $v$ with the smallest of edges
 
-\subsection{}
+\subsection{} If Proposition 1 is true, then the edges in the MST of $G$ are an optimal
+solution to FSP.
+
+\proof If $A \wedge B \Rightarrow C$ and we know from part 1: $A \wedge B \Rightarrow MST$,
+and $A \wedge B \wedge C \Rightarrow FSP$. Then clearly $MST \Rightarrow FSP$.
+
+\subsection{} Every optimal solution to FSP must include every edge in the MST of $G$.
+
+\proof Suppose there exist an optimal solution to the FSP which does not contain
+every edge in the MST of $G$. Since by (a) and (b) a solution to the FSP is the
+MST of $G$, if we remove an edge, the graph is no longer connected $\Rightarrow \Leftarrow$.
 
 \end{document}
