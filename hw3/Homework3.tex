@@ -1,0 +1,69 @@
+% ----------------------------------------------------------------
+% AMS-LaTeX Paper ************************************************
+% **** -----------------------------------------------------------
+\documentclass{amsart}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{inconsolata}
+\usepackage[shortlabels]{enumitem}
+% \usepackage{xy}
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+% THEOREMS -------------------------------------------------------
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem*{lemstar}{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem*{claimstar}{Claim}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{alg}[thm]{Algorithm}
+\newtheorem*{algstar}{Algorithm}
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem*{rmkstar}{Remark}
+\numberwithin{equation}{section}
+% MATH -----------------------------------------------------------
+\newcommand{\Matrix}[4]{ \left( \begin{array}{cc}  #1 & #2 \\  #3 & #4 \\ \end{array} \right) }
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\isom}{\cong}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\let\null\varnothing
+
+\pagestyle{plain}
+% ----------------------------------------------------------------
+\begin{document}
+\title[]{Algorithms Homework 3}%
+\author{Evan Simmons \\
+        Dept. of Mathematics \& Computer Science \\ University of California Santa Cruz}%
+%\date{}
+%\dedicatory{}%
+%\commby{}%
+\renewcommand{\abstractname}{Homework Option}
+% ----------------------------------------------------------------
+\begin{abstract}
+I have chosen the homework heavy option.
+\end{abstract}
+\maketitle
+% ----------------------------------------------------------------
+
+
+
+\end{document}
