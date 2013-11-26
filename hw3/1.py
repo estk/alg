@@ -1,31 +1,25 @@
 def par (W, L):
+  n = len(W)-1
   T = [None]*len(W)
   B = [None]*len(W)
   
   def minsnd (l):
     return min(l, key=lambda (x,y): y)
-  def scale (t, v):
-    return (t[0], (t[1]+v))
-  def length(i,j):
-    summ = 0
-    for k in range(i,j+1):
-      summ += len(W[k])+1
-      # print len(W[k])
-    return summ-1
-    # if i==j:
-    #   return len(W[i])
-    # return length(i,j-1) + length(i-1,j) + length(i-1,j-1) + 1
   def slack2 (i,j):
+    def length(i,j):
+      summ = 0
+      for k in range(i,j+1):
+        summ += len(W[k])+1
+      return summ-1
+    
     s = L - length(i,j)
-    print length(i,j)
     if s<0:
       return float('inf')
     else:
-      return s
-      
+      return s*s
   def opt (j):
     if j==0:
-      return ([],slack2(j,j))
+      return slack2(j,j)
     if T[j]:
       return T[j]
       
@@ -33,16 +27,21 @@ def par (W, L):
     parts = []
     for k in range(j):
       o = opt(k)
-      parts.append( (o[0] + [k],(o[1] + slack2(k+1,j))) )
+      parts.append( (k, opt(k) + slack2(k+1,j)) )
       
-    print parts
-    T[j] = minsnd(parts)
-    print T[j], j
+    B[j], T[j] = minsnd(parts)
     return T[j]
     
-  for k in range(len(W)):
-    opt(k)
-  # print range(len(W)):
-  print opt((len(W)-1))
+#----------------
+  minimum = opt(len(W)-1)
+  
+  k = n
+  res = []
+  
+  while k!=0:
+    res.append( B[k] )
+    k = B[k]
+  print res
+  print T[n]
 
 par(['hello', 'my', 'name', 'is', 'evan'], 7)
