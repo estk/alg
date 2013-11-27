@@ -43,5 +43,5 @@ def par (W, L):
     k = B[k]
   print res
   print T[n]
-
-par(['hello', 'my', 'name', 'is', 'evan'], 7)
+par(['hello', 'i', 'am', 'e'], 7)
+# par(['hello', 'my', 'name', 'is', 'evan'], 7)
