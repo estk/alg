@@ -1,0 +1,525 @@
+% ----------------------------------------------------------------
+% AMS-LaTeX Paper ************************************************
+% **** -----------------------------------------------------------
+\documentclass{amsart}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{inconsolata}
+\usepackage[shortlabels]{enumitem}
+\usepackage[noend]{algpseudocode}
+\usepackage{tkz-graph}
+% \usepackage{xy}
+% ----------------------------------------------------------------
+\vfuzz2pt % Don't report over-full v-boxes if over-edge is small
+\hfuzz2pt % Don't report over-full h-boxes if over-edge is small
+% THEOREMS -------------------------------------------------------
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem*{lemstar}{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{claim}[thm]{Claim}
+\newtheorem*{claimstar}{Claim}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{alg}[thm]{Algorithm}
+\newtheorem*{algstar}{Algorithm}
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\newtheorem*{rmkstar}{Remark}
+\numberwithin{equation}{section}
+% MATH -----------------------------------------------------------
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\set}[1]{\left\{#1\right\}}
+
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\isom}{\cong}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\let\null\varnothing
+
+\pagestyle{plain}
+% ----------------------------------------------------------------
+\begin{document}
+\title[]{Algorithms Homework 4}%
+\author{Evan Simmons \\
+        Dept.\ of Mathematics \& Computer Science \\ University of California Santa Cruz}%
+%\date{}
+%\dedicatory{}%
+%\commby{}%
+\renewcommand{\abstractname}{Homework Option}
+% ----------------------------------------------------------------
+\begin{abstract}
+I have chosen the homework heavy option.
+\end{abstract}
+\maketitle
+% ----------------------------------------------------------------
+\section{Problem 10}
+Suppose you are given a directed graph $G=(V,E)$, with a positive integer capacity $c_e$ on each edge $e$, a source $s \in V$, and a sink $t\in V$. You are also given a maximum $s-t$ flow in $G$, defined by a flow value $f_e$ on each edge $e$. The flow $f$ is acyclic and integer-valued.
+
+% Solution ========================
+
+
+\section{Problem 16}
+\section{Problem 18}
+
+\subsection*{a}
+\subsection*{b}
+
+\begin{center}
+\begin{tikzpicture}
+    \GraphInit[vstyle=Normal]
+    \SetGraphUnit{1}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue!20 }}
+    \Vertex[x=3,y=4.2]{row}
+    \Vertex[x=6,y=4.2]{column}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue }}
+
+    \tikzset{LabelStyle/.style =   {draw}}
+    \tikzset{VertexStyle/.style = {shape        = circle,
+                                   fill         = blue!20,
+                                   minimum size = 20pt,
+                                   text         = black,
+                                   draw}}
+    \tikzset{EdgeStyle/.style = {TempStyle, -}}
+    \Vertex[x=3,y=3.5,L=$R_1$]{A1}
+    \SO[L=$R_2$](A1){A2}
+    \SO[L=$R_3$](A2){A3}
+    
+    \Vertex[x=6,y=3.5, L=$C_1$]{B1}
+    \SO[L=$C_2$](B1){B2}
+    \SO[L=$C_3$](B2){B3}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0, line width=1pt}}
+    \Edge(A1)(B1)
+    \tikzset{EdgeStyle/.append style = {bend left=0, line width=3pt}}
+    \Edge(A1)(B2)
+    \tikzset{EdgeStyle/.append style = {bend left=0, line width=1pt}}
+    \Edge(A2)(B2)
+    \tikzset{EdgeStyle/.append style = {bend left=0, line width=3pt}}
+    \Edge(A2)(B3)
+    \tikzset{EdgeStyle/.append style = {bend left=0, line width=1pt}}
+    \Edge(A3)(B3)
+
+  \end{tikzpicture}
+\end{center}
+
+\subsection*{c}
+\section{Problem 20}
+Your friends are involved in a large-scale atmospheric science experiment. They need to get good measurements on a set $S$ of $n$ different conditions in the atmosphere (such as the ozone level at various places), and they have a set of $m$ balloons that they plan to send up to make these measurements. Each balloon can make at most two measurements.
+Unfortunately, not all balloons are capable of measuring all conditions, so for each balloon $i = 1, \ldots , m$, they have a set $S_i$ of conditions that balloon $i$ can measure. Finally, to make the results more reliable, they plan to take each measurement from at least $k$ different balloons. (Note that a single balloon should not measure the same condition twice.) They are having trouble figuring out which conditions to measure on which balloon.
+
+\subsection*{a}
+Give a polynomial-time algorithm that takes the input to an instance of this problem (the $n$ conditions, the sets $S_i$ for each of the $m$ balloons, and the parameter $k$) and decides whether there is a way to measure each condition by $k$ different balloons, while each balloon only measures at most two conditions. \\
+
+We consider the problem cast as a network:
+
+% Solution ========================
+\begin{center}
+\begin{tikzpicture}
+    \GraphInit[vstyle=Normal]
+    \SetGraphUnit{1}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue!20 }}
+    \Vertex[x=1.5,y=4.2]{2}
+    \Vertex[x=4.5,y=4.2]{1}
+    \Vertex[x=7.5,y=4.2]{$k$}
+
+    \tikzset{LabelStyle/.style =   {draw}}
+    \tikzset{VertexStyle/.style = {shape        = circle,
+                                   fill         = blue!20,
+                                   minimum size = 20pt,
+                                   text         = black,
+                                   draw}}
+    \tikzset{EdgeStyle/.style = {TempStyle, ->}}
+    \Vertex[x=0,y=2]{s}
+    \Vertex[x=3,y=3.5,L=$S_1$]{A1}
+    \SO[L=$S_2$](A1){A2}
+    \SO[L=$S_3$](A2){A3}
+    \SO[L=$S_2$](A3){A4}
+    
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(s)(A1)
+    \Edge(s)(A2)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(s)(A3)
+    \Edge(s)(A4)
+
+    \Vertex[label=$c_1$,x=6,y=3.5, L=$C_1$]{B1}
+    \SO[L=$C_2$](B1){B2}
+    \SO[L=$C_3$](B2){B3}
+    \SO[L=$C_4$](B3){B4}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(A1)(B1)
+    \Edge(A1)(B2)
+    \Edge(A2)(B2)
+    \Edge(A2)(B3)
+    \Edge(A3)(B3)
+    \Edge(A3)(B4)
+    \Edge(A4)(B4)
+    \Edge(A4)(B1)
+
+
+    \Vertex[x=9,y=2]{t}
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(B1)(t)
+    \Edge(B2)(t)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(B3)(t)
+    \Edge(B4)(t)
+
+  \end{tikzpicture}
+\end{center}
+
+\claimstar If we cast the problem as a network, then deciding if there is a way to measure each condition $k$ times is equivalent to determining if the maximum flow of the graph is equal to $k \cdot |C|$.
+
+\proof
+Let the flow in the graph represent the number of measurements taken. The constraints are as follows:
+
+\begin{enumerate}
+  \item Each balloon takes at most $2$ measurements.
+  \item Each balloon takes each measurement at most once.
+  \item Each measurement must be taken at least $k$ times.
+\end{enumerate}
+
+We encode the constraints as the capacities of groups of edges. For the first constraint, since each balloon should have a maximum flow of $2$ through it, we say that the single incoming edge will have capacity 2. For the second constraint since each balloon should take each measurement at most once, each edge from a balloon to a measurement will have capacity 1.
+
+Finally consider the last constraint, we want to ensure that each measurement is taken at least $k$ times. Therefore we bound the flow through each measurement node to $k$, and if under maximum flow each of the $k$ weighted edges are saturated then we can take $k$ observations of each measurement. But this is exactly the same as if the maximum flow is equal to $k \cdot |C|$.
+
+\rmkstar By the Ford Fulkerson algorithm we can find the maximum flow of the proposed graph in $O(|S| \cdot E)$ where $E$ is the number of edges, specifically: $$E = |S| + |C| + \sum_{S_i \in S} |S_i|. $$
+
+
+\subsection*{b}
+Suppose that each of the balloons is produced by one of three different sub-contractors involved in the experiment. A requirement of the experiment is that there be no condition for which all $k$ measurements come from balloons produced by a single subcontractor. Explain how to modify your polynomial-time algorithm for part (a) into a new algorithm that decides whether there exists a solution satisfying all the conditions from (a), plus the new requirement about subcontractors. \\
+
+% Solution ========================
+\noindent\makebox[\textwidth]{%
+\begin{tikzpicture}
+    \GraphInit[vstyle=Normal]
+    \SetGraphUnit{1}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue!20 }}
+    \Vertex[x=1.5,y=4.2]{2}
+    \Vertex[x=4.5,y=4.2]{1}
+    \Vertex[x=7.5,y=4.2]{$k$}
+
+    \tikzset{LabelStyle/.style =   {draw}}
+    \tikzset{VertexStyle/.style = {shape        = circle,
+                                   fill         = blue!20,
+                                   minimum size = 20pt,
+                                   text         = black,
+                                   draw}}
+    \tikzset{EdgeStyle/.style = {TempStyle, ->}}
+    \Vertex[x=0,y=2]{s}
+    \Vertex[x=3,y=3.5,L=$S_1$]{A1}
+    \SO[L=$S_2$](A1){A2}
+    \SO[L=$S_3$](A2){A3}
+    \SO[L=$S_2$](A3){A4}
+    
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(s)(A1)
+    \Edge(s)(A2)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(s)(A3)
+    \Edge(s)(A4)
+
+    \Vertex[label=$c_1$,x=6,y=3.5, L=$C_1$]{B1}
+    \SO[L=$C_2$](B1){B2}
+    \SO[L=$C_3$](B2){B3}
+    \SO[L=$C_4$](B3){B4}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(A1)(B1)
+    \Edge(A1)(B2)
+    \Edge(A2)(B2)
+    \Edge(A2)(B3)
+    \Edge(A3)(B3)
+    \Edge(A3)(B4)
+    \Edge(A4)(B4)
+    \Edge(A4)(B1)
+
+    \Vertex[label=$c_1$,x=9,y=3.5, L=$C_1'$]{C1}
+    \SO[L=$C_2'$](C1){C2}
+    \SO[L=$C_3'$](C2){C3}
+    \SO[L=$C_4'$](C3){C4}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(B1)(C1)
+    \Edge(B2)(C2)
+    \Edge(B3)(C3)
+    \Edge(B4)(C4)
+
+    \Vertex[x=12,y=3, L=$M_1$]{D1}
+    \SO[L=$M_2$](D1){D2}
+    \SO[L=$M_3$](D2){D3}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(C1)(D1)
+    \Edge(C1)(D2)
+    \Edge(C2)(D1)
+    \Edge(C2)(D2)
+    \Edge(C3)(D2)
+    \Edge(C3)(D3)
+    \Edge(C4)(D2)
+    \Edge(C4)(D3)
+
+    \Vertex[x=15,y=2]{t}
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(D1)(t)
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(D2)(t)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(D3)(t)
+
+
+  \end{tikzpicture}
+}
+\claimstar If we cast the problem as a network, then deciding if there is a way to measure each condition $k$ times is equivalent to determining if the maximum flow of the graph is equal to $k \cdot |C|$.
+
+\proof
+Let the flow in the graph represent the number of measurements taken. The constraints are as follows: 
+
+\begin{enumerate}
+  \item Each balloon takes at most $2$ measurements.
+  \item Each balloon takes each measurement at most once.
+  \item Each measurement must be taken at least $k$ times.
+  \item Each measurement can be taken by at most $k-1$ subcontractors M.
+\end{enumerate}
+
+As in part a we encode constraints (1)-(3), but this time instead of making the outbound edges from the measurements incident to the sink $t$ we augment the previous representation with a clone of the measurements, and a one to one correspondence of edges from each measurement to its clone. As before theses have capacity $k$. In this way we encode the fact that each measurement may be observed at most $k$ times. Finally to encode the constraint that each measurement must be taken by more than one subcontractor (M) we will consider the edges from the measurement clones, and the subcontractors. Clearly each measurement may be taken at most $k-1$ times by a specific subcontractor, therefore the edges must all have capacity $k-1$. We connect the subcontractor nodes to the sink. Therefore the max flow will only be equal to $k \cdot |C|$ if each measurement can be taken $k$ times under the specified constraints.
+
+\rmkstar By the Ford Fulkerson algorithm we can find the maximum flow of the proposed graph in $O(|S| \cdot E)$ where $E$ is the number of edges, specifically: 
+$$E = |S| + |C| + |M| + \sum_{S_i \in S} |S_i| + \sum_{M_i \in M} |M_i|$$
+where $M_i$ is the set of measurement which can be made by a manufacturer.
+
+
+\section{Problem 22}
+Let $M$ be an $n\ x\ n$ matrix with each entry equal to either $0$ or $1$. Let $m_{ij}$ denote the entry in row $i$ and column $j$. A diagonal entry is one of the form $m_{ii}$ for some $i$. We say that $M$ is rearrangeable if it is possible to swap some of the pairs of rows and some of the pairs of columns (in any sequence) so that, after all the swapping, all the diagonal entries of $M$ are equal to $1$.
+
+\subsection*{a}
+Give an example of a matrix $M$ that is not rearrangeable, but for which at least one entry in each row and each column is equal to $1$.
+
+% Solution ========================
+
+\begin{equation*}
+  \left(
+    \begin{tabular}{lll}
+    1 & 1 & 1 \\
+    1 & 0 & 0 \\
+    1 & 0 & 0 \\
+    \end{tabular}
+  \right)
+\end{equation*}
+
+\subsection*{b}
+Give a polynomial-time algorithm that determines whether a matrix $M$ with $0-1$ entries is rearrangeable.
+
+% Solution ========================
+
+We will cast the problem as a network flow. Below is an example network:
+
+\begin{center}
+\begin{tikzpicture}
+    \GraphInit[vstyle=Normal]
+    \SetGraphUnit{1}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue!20 }}
+    \Vertex[x=3,y=4.2]{row}
+    \Vertex[x=6,y=4.2]{column}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue }}
+
+    \tikzset{LabelStyle/.style =   {draw}}
+    \tikzset{VertexStyle/.style = {shape        = circle,
+                                   fill         = blue!20,
+                                   minimum size = 20pt,
+                                   text         = black,
+                                   draw}}
+    \tikzset{EdgeStyle/.style = {TempStyle, -}}
+    \Vertex[x=3,y=3.5,L=$R_1$]{A1}
+    \SO[L=$R_2$](A1){A2}
+    \SO[L=$R_3$](A2){A3}
+    
+    \Vertex[x=6,y=3.5, L=$C_1$]{B1}
+    \SO[L=$C_2$](B1){B2}
+    \SO[L=$C_3$](B2){B3}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(A1)(B1)
+    \Edge(A1)(B2)
+    \Edge(A1)(B3)
+    \Edge(A2)(B1)
+    \Edge(A3)(B1)
+
+  \end{tikzpicture}
+\end{center}
+
+
+\claimstar Suppose we cast the matrix into a bipartite graph similar to the one above where for each $1$ in the matrix we connect the row that it is in to the column that it is in with an edge. Then if there is a perfect matching in the bipartite graph, then the matrix is rearrangeable.
+
+\proof Consider the matrix which has only $1$'s on the diagonal', each $M_{ii} = 1$, ie the lines of the bipartite graph are horizontal. Therefore clearly if we have a perfect matching, every vertex is incident to exactly one edge, then by swapping rows and columns we can achieve a graph which is exactly that of matrix which has only one's on the diagonal.
+
+\claimstar The bipartite matching problem is solvable using network flow and the Ford-Fulkerson algorithm.
+
+\proof Consider the above graph cast into a network.
+
+\begin{center}
+\begin{tikzpicture}
+    \GraphInit[vstyle=Normal]
+    \SetGraphUnit{1}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue }}
+    \Vertex[x=1.5,y=4.2]{1}
+    \Vertex[x=3,y=4.2]{row}
+    \Vertex[x=4.5,y=4.2, L=$\infty$]{inf}
+    \Vertex[x=6,y=4.2]{column}
+    \Vertex[x=7.5,y=4.2]{1}
+
+    \tikzset{LabelStyle/.style =   {draw}}
+    \tikzset{VertexStyle/.style = {shape        = circle,
+                                   fill         = blue!20,
+                                   minimum size = 20pt,
+                                   text         = black,
+                                   draw}}
+    \tikzset{EdgeStyle/.style = {TempStyle, ->}}
+    \Vertex[x=0,y=2.5]{s}
+    \Vertex[x=3,y=3.5,L=$R_1$]{A1}
+    \SO[L=$R_2$](A1){A2}
+    \SO[L=$R_3$](A2){A3}    
+
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(s)(A1)
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(s)(A2)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(s)(A3)
+
+    \Vertex[label=$c_1$,x=6,y=3.5, L=$C_1$]{B1}
+    \SO[L=$C_2$](B1){B2}
+    \SO[L=$C_3$](B2){B3}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(A1)(B1)
+    \Edge(A1)(B2)
+    \Edge(A1)(B3)
+    \Edge(A2)(B1)
+    \Edge(A3)(B1)
+
+    \Vertex[x=9,y=2.5]{t}
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(B1)(t)
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(B2)(t)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(B3)(t)
+
+  \end{tikzpicture}
+\end{center}
+
+The restrictions as follows: each row can have at most one match, each column can have at most one match. If under the maximum flow the capacity of the given flow is saturated then there exists a perfect matching.
+
+\rmkstar We can solve for the maximum flow using Ford-Fulkerson, which runs in $O(maxflow\ \cdot E) = O(n \cdot E)$ where: $ E = n + n^2 $. Therefore we can determine if a matrix is rearrangeable in $O(n^3)$ using Ford-Fulkerson.
+
+\section{Problem 27}
+Consider a driving schedule for carpool of $P = \{ p_1, \ldots, p_k \}$ people over $d$ days. For each day, there is a subset of people who commute, on the $i$th day the subset will be $S_i \subseteq P$.
+
+\subsection*{a}
+Prove that for any sequence of sets $S_1, \ldots , S_d$, there exists a fair driving schedule.
+
+% Solution ========================
+
+
+
+\subsection*{b}
+Give an algorithm to compute a fair driving schedule with running time polynomial in $k$ and $d$.
+
+% Solution ========================
+
+Consider the problem cast as a network:
+\begin{center}
+\begin{tikzpicture}
+    \GraphInit[vstyle=Normal]
+    \SetGraphUnit{1}
+    \tikzset{VertexStyle/.style = {shape        = none,
+                                   text = blue }}
+    \Vertex[x=1.5,y=4.2,L=$\ceil{\Delta_j}$]{Dj}
+    \Vertex[x=3,y=4.2]{people}
+    \Vertex[x=4.5,y=4.2, L=$\infty$]{inf}
+    \Vertex[x=6,y=4.2]{days}
+    \Vertex[x=7.5,y=4.2]{1}
+
+    \tikzset{LabelStyle/.style =   {draw}}
+    \tikzset{VertexStyle/.style = {shape        = circle,
+                                   fill         = blue!20,
+                                   minimum size = 20pt,
+                                   text         = black,
+                                   draw}}
+    \tikzset{EdgeStyle/.style = {TempStyle, ->}}
+    \Vertex[x=0,y=2.5]{s}
+    \Vertex[x=3,y=3.5,L=$P_1$]{A1}
+    \SO[L=$P_2$](A1){A2}
+    \SO[L=$P_3$](A2){A3}    
+
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(s)(A1)
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(s)(A2)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(s)(A3)
+
+    \Vertex[label=$c_1$,x=6,y=3.5, L=$S_1$]{B1}
+    \SO[L=$S_2$](B1){B2}
+    \SO[L=$S_3$](B2){B3}
+
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(A1)(B1)
+    \Edge(A1)(B2)
+    \Edge(A1)(B3)
+    \Edge(A2)(B2)
+    \Edge(A2)(B3)
+    \Edge(A3)(B3)
+
+    \Vertex[x=9,y=2.5]{t}
+    \tikzset{EdgeStyle/.append style = {bend left=10}}
+    \Edge(B1)(t)
+    \tikzset{EdgeStyle/.append style = {bend left=0}}
+    \Edge(B2)(t)
+    \tikzset{EdgeStyle/.append style = {bend right=10}}
+    \Edge(B3)(t)
+
+  \end{tikzpicture}
+\end{center}
+
+Let the flow through the network represent the "drivings". We seek to encode the following constraints:
+\begin{enumerate}
+  \item Each person should drive at most $\ceil{\Delta_j}$.
+  \item Each day needs at most one driver.
+\end{enumerate}
+
+In the network we constrain the flow to each person to their $\ceil{\Delta}$, and the flow out of each day to one.
+
+\claimstar A fair driving schedule corresponds to a flow through the network such that each day has flow one.
+
+
+\rmkstar We can solve for the maximum flow with Ford-Fulkerson in $O(f \cdot E)$ time. Specifically $f=d$, and
+$$E= |P| + |S| + \sum_{S_i \in S} |S_i|.$$
+
+But $|S|=d$, and $\sum_{S_i \in S} |S_i|$ is in $O(d \cdot |P|)$ Therefore the algorithm runs in $O(d^2 + d \cdot |P| + d^2 \cdot |P|) = O(d^2 \cdot |P|)$.
+
+\rmkstar Using a maximum flow through the network, we can extrapolate a fair driving schedule by simply recording the edges between people and days. (These are the days that a given person drives.)
+
+
+\end{document}
